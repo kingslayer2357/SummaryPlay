@@ -1,0 +1,26 @@
+{
+  "name": "webapp",
+  "version": "1.0.0",
+  "description": "A web application that utilizes the AI,computer vision and NLP techniques to summarize the content of a text file or audio or images to give a short summary of the same.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kingslayer2357/SummaryPlay.git"
+  },
+  "keywords": [
+    "NLP",
+    "Summarizer"
+  ],
+  "author": "Himanshu and GsGupta",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kingslayer2357/SummaryPlay/issues"
+  },
+  "homepage": "https://github.com/kingslayer2357/SummaryPlay#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
