@@ -22,7 +22,7 @@
         height: 370px;
     }
 
-    input[type=submit] {
+    #subbtn {
         width: 100%;
         background-color: #4CAF50;
         color: white;
@@ -33,7 +33,7 @@
         cursor: pointer;
     }
 
-    input[type=submit]:hover {
+    #subbtn:hover {
         background-color: #45a049;
     }
 
@@ -56,11 +56,9 @@
     </nav>
     <div class="outer">
         <h2>Enter Text Data to be summarized-</h2>
-        <form>
-
-            <textarea id="data" name="subject" placeholder="Write something.."></textarea>
-
-            <input type="submit" value="Submit">
+        <form action="/gs/posttext" method="post">
+            <textarea id="data" name="data" placeholder="Write something.."></textarea>
+            <button type="submit" id="subbtn">Submit</button>
         </form>
     </div>
 
