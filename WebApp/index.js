@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const errorHandler = require('./middleware/errorHandler')
 const route = require('./routes/mainRoutes');
 const ejs = require('ejs');
-
+var multer  =   require('multer');
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
