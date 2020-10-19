@@ -4,6 +4,10 @@ let ejs = require('ejs');
 var path = require('path');
 var fs = require('fs');
 const multer = require('multer')
+const { spawn } = require('child_process');
+
+// const x=require('../../test/test.py')
+
 
 var storage = multer.diskStorage({
     destination: function (req, file, callback) {
@@ -14,7 +18,7 @@ var storage = multer.diskStorage({
             callback(null, file.fieldname+'.txt');
         }
         else{
-            callback(null, file.fieldname+'.mp4');
+            callback(null, file.fieldname+'.mp3');
         }
     }
 });
@@ -33,7 +37,7 @@ var uploadVoice = multer({
     storage: storage,
     fileFilter: (req,file,cb)=>{
         var ext = path.extname(file.originalname)
-        if (ext != '.mp4') {
+        if (ext != '.mp3') {
             return cb(new Error('Wrong file type'));
         }
         cb(null, true)
@@ -57,34 +61,47 @@ router.get("/voiceuploader", async (req, res, next) => {
 })
 
 router.post("/posttext", async (req, res, next) => {
-    data = req.body.data
-    console.log(data)
+    inp = req.body.data
+    const python = spawn('python3', [__dirname +"/../../pythonScripts/sumar.py", inp]);
+    python.stdout.on('data', async function (data) {
+      console.log('Pipe data from python script ...');
+      dataToSend = await data.toString();
+    });
+    python.on('close', (code) => {
+      console.log(`child process close all stdio with code ${code}`);
+
+      return res.status(200).send(dataToSend)
+    });
+
 })
 router.post('/api/txtfile', function (req, res) {
     upload(req, res, function (err) {
         if (err) {
-            // console.log(err);
             return res.end("Error uploading file.");
         }
         fs.readFile(__dirname + '/../uploads/textfile.txt', 'utf8', function(err, data){ 
             if (err){
                 console.log(err);
             }
-            console.log(data); 
+            const python = spawn('python3', [__dirname +"/../../pythonScripts/sumar.py", data]);
+            python.stdout.on('data', async function (data) {
+            console.log('Pipe data from python script ...');
+            dataToSend = await data.toString();
+            });
+            python.on('close', (code) => {
+            console.log(`child process close all stdio with code ${code}`);
+            return res.status(200).send(dataToSend)
+            });
         }); 
-        res.end("File is uploaded");
     });
 });
 
 router.post('/api/voicefile', function (req, res) {
     uploadVoice(req, res, function (err) {
         if (err) {
-            // console.log(err);
             return res.end("Error uploading file.");
         }
         res.end("File is uploaded");
     });
 });
-
-
 module.exports = router;
